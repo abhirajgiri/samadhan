@@ -70,6 +70,44 @@ a {
   background: #111111;
   color: #ffffff;
 }
+/* =========================================
+   NAVBAR ENTRANCE
+   ========================================= */
+
+.navbar .nav-links a,
+.navbar .nav-button {
+  opacity: 0;
+  transform: translateY(-12px);
+}
+
+/* Start the navbar sequence after intro */
+.navbar.navbar-ready .nav-links a:nth-child(1) {
+  animation: navItemIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
+}
+
+.navbar.navbar-ready .nav-links a:nth-child(2) {
+  animation: navItemIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+}
+
+.navbar.navbar-ready .nav-links a:nth-child(3) {
+  animation: navItemIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.45s forwards;
+}
+
+.navbar.navbar-ready .nav-button {
+  animation: navItemIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards;
+}
+
+@keyframes navItemIn {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
 /* ---------------- HERO ---------------- */
 
@@ -80,6 +118,82 @@ a {
   grid-template-columns: 1.15fr 0.85fr;
   align-items: center;
   gap: 60px;
+  position: relative;
+overflow: hidden;
+isolation: isolate;
+}
+/* =========================================
+   HERO AMBIENT LIGHT
+   ========================================= */
+
+.hero::before {
+  content: "";
+  position: absolute;
+
+  width: 520px;
+  height: 520px;
+
+  left: 5%;
+  top: 25%;
+
+  background: radial-gradient(
+    circle,
+    rgba(255, 59, 48, 0.10) 0%,
+    rgba(255, 59, 48, 0.045) 35%,
+    transparent 70%
+  );
+
+  filter: blur(30px);
+
+  pointer-events: none;
+  z-index: -1;
+
+  animation: ambientFloat 8s ease-in-out infinite alternate;
+}
+
+.hero::after {
+  content: "";
+
+  position: absolute;
+
+  width: 420px;
+  height: 420px;
+
+  right: 5%;
+  bottom: 5%;
+
+  background: radial-gradient(
+    circle,
+    rgba(255, 59, 48, 0.06) 0%,
+    transparent 70%
+  );
+
+  filter: blur(35px);
+
+  pointer-events: none;
+  z-index: -1;
+
+  animation: ambientFloatRight 10s ease-in-out infinite alternate;
+}
+
+@keyframes ambientFloat {
+  from {
+    transform: translate3d(-20px, 10px, 0) scale(1);
+  }
+
+  to {
+    transform: translate3d(30px, -20px, 0) scale(1.08);
+  }
+}
+
+@keyframes ambientFloatRight {
+  from {
+    transform: translate3d(20px, 10px, 0) scale(1);
+  }
+
+  to {
+    transform: translate3d(-25px, -25px, 0) scale(1.06);
+  }
 }
 
 .hero-content {
@@ -113,7 +227,7 @@ a {
 }
 
 .hero h1 span {
-  color: #666666;
+  color: #111111;
 }
 .hero h1{
   color: #222222;
@@ -1094,4 +1208,561 @@ a {
 .submit-button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+}
+/* =================================
+   SAMADHAN INTRO EXPERIENCE
+================================= */
+
+.intro-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background:
+    radial-gradient(
+      circle at 50% 45%,
+      rgba(255, 255, 255, 1) 0%,
+      rgba(245, 245, 245, 1) 45%,
+      rgba(228, 228, 228, 1) 100%
+    );
+
+  overflow: hidden;
+  pointer-events: none;
+
+  
+}
+/* =========================================
+   PREMIUM TECH INTRO BACKGROUND
+   ========================================= */
+
+.intro-tech-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.intro-tech-bg svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Technical network lines */
+.tech-line {
+  fill: none;
+  stroke: rgba(20, 20, 20, 0.13);
+  stroke-width: 1;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+
+  stroke-dasharray: 7 15;
+  stroke-dashoffset: 0;
+
+  animation:
+    techLineMove 9s linear infinite,
+    techLineFade 2s ease forwards;
+}
+
+/* Central network is more subtle */
+.central-line {
+  stroke: rgba(20, 20, 20, 0.08);
+  stroke-width: 1.2;
+}
+
+/* Small connection nodes */
+.tech-node {
+  fill: #111111;
+  opacity: 0;
+
+  transform-box: fill-box;
+  transform-origin: center;
+
+  animation:
+    techNodeAppear 1.2s ease forwards,
+    techNodePulse 3s ease-in-out 1.2s infinite;
+}
+
+
+/* =========================================
+   SUBTLE CENTER LIGHT
+   ========================================= */
+
+.intro-tech-bg::after {
+  content: "";
+
+  position: absolute;
+  width: 700px;
+  height: 700px;
+
+  left: 50%;
+  top: 50%;
+
+  transform: translate(-50%, -50%);
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(255, 255, 255, 0.95) 0%,
+      rgba(255, 255, 255, 0.65) 35%,
+      rgba(255, 255, 255, 0) 72%
+    );
+
+  pointer-events: none;
+}
+
+
+/* =========================================
+   ANIMATIONS
+   ========================================= */
+
+@keyframes techLineMove {
+  from {
+    stroke-dashoffset: 0;
+  }
+
+  to {
+    stroke-dashoffset: -220;
+  }
+}
+
+@keyframes techLineFade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes techNodeAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+
+  to {
+    opacity: 0.45;
+    transform: scale(1);
+  }
+}
+
+@keyframes techNodePulse {
+  0%,
+  100% {
+    opacity: 0.25;
+    transform: scale(0.9);
+  }
+
+  50% {
+    opacity: 0.75;
+    transform: scale(1.25);
+  }
+}
+
+
+/* =========================================
+   KEEP LOGO ABOVE BACKGROUND
+   ========================================= */
+
+.intro-logo {
+  position: relative;
+  z-index: 2;
+}
+
+
+/* subtle cinematic light */
+
+.intro-screen::before {
+  content: "";
+
+  position: absolute;
+  width: 55vw;
+  height: 55vw;
+
+  max-width: 800px;
+  max-height: 800px;
+
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.75);
+
+  filter: blur(100px);
+
+  opacity: 0;
+
+  animation: introGlow 2.2s ease-out 0.1s forwards;
+}
+
+
+/* very subtle moving light */
+
+.intro-screen::after {
+  content: "";
+
+  position: absolute;
+  inset: -50%;
+
+  background:
+    linear-gradient(
+      115deg,
+      transparent 35%,
+      rgba(255, 255, 255, 0.35) 50%,
+      transparent 65%
+    );
+
+  transform: translateX(-60%);
+
+  animation: introLightSweep 2.8s cubic-bezier(0.65, 0, 0.35, 1) 0.2s forwards;
+}
+
+
+@keyframes introGlow {
+  from {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+
+@keyframes introLightSweep {
+  from {
+    transform: translateX(-60%);
+  }
+
+  to {
+    transform: translateX(60%);
+  }
+}
+
+
+@keyframes introBackgroundExit {
+  0% {
+    opacity: 1;
+    clip-path: inset(0 0 0 0);
+  }
+
+  65% {
+    opacity: 1;
+    clip-path: inset(0 0 0 0);
+  }
+
+  100% {
+    opacity: 0;
+    clip-path: inset(0 0 100% 0);
+  }
+}
+
+
+/* Main SAMADHAN logo */
+
+.intro-logo {
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  display: flex;
+  align-items: center;
+
+  transform: translate(-50%, -50%);
+
+  color: #111111;
+
+  font-size: clamp(42px, 8vw, 110px);
+  font-weight: 750;
+  letter-spacing: 0.12em;
+  white-space: nowrap;
+  transform-origin: center center;
+  
+}
+.intro-logo-travel {
+  animation:
+    introLogoTravel 1.5s cubic-bezier(0.76, 0, 0.24, 1) forwards !important;
+}
+@keyframes introLogoTravel {
+  0% {
+    transform:
+      translate(-50%, -50%)
+      scale(1);
+  }
+
+  100% {
+    transform:
+      translate(
+        calc(-50% + var(--move-x)),
+        calc(-50% + var(--move-y))
+      )
+      scale(var(--move-scale));
+  }
+}
+
+
+/* Individual letters */
+
+.intro-logo span {
+  display: inline-block;
+
+  opacity: 0;
+
+  transform:
+    translateY(45px)
+    scale(0.92);
+
+  filter: blur(8px);
+
+  animation:
+    introLetterIn 0.9s cubic-bezier(0.16, 1, 0.3, 1)
+    calc(0.12s * var(--i))
+    forwards;
+}
+
+
+/* Letter entrance */
+
+@keyframes introLetterIn {
+  0% {
+    opacity: 0;
+
+    transform:
+      translateY(45px)
+      scale(0.92);
+
+    filter: blur(8px);
+  }
+
+  60% {
+    opacity: 1;
+
+    filter: blur(0);
+
+    transform:
+      translateY(-4px)
+      scale(1.01);
+  }
+
+  100% {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+
+    filter: blur(0);
+  }
+}
+
+
+/* 
+   The logo doesn't disappear.
+   It physically travels toward
+   the navbar position.
+*/
+
+
+
+
+/*
+   The white intro layer leaves
+   after the logo reaches the navbar.
+*/
+
+
+
+
+/* Mobile positioning */
+
+@media (max-width: 700px) {
+
+  @keyframes introLogoMove {
+    0% {
+      left: 50%;
+      top: 50%;
+
+      transform:
+        translate(-50%, -50%)
+        scale(1);
+    }
+
+    100% {
+      left: 24px;
+      top: 32px;
+
+      transform:
+        translate(0, -50%)
+        scale(0.30);
+    }
+  }
+
+}
+/* =========================================
+   SAMADHAN INTRO → NAVBAR TRANSITION
+========================================= */
+
+.navbar {
+  position: relative;
+  z-index: 10;
+}
+
+/* Keep the real navbar logo invisible
+   while the intro logo is travelling */
+
+
+/* Everything except the logo waits
+   until the intro is almost finished */
+.nav-links,
+.nav-button {
+  opacity: 0;
+  animation: navItemsReveal 1s cubic-bezier(0.16, 1, 0.3, 1) 4.4s forwards;
+}
+
+
+@keyframes navItemsReveal {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+@keyframes navLogoAppear {
+  to {
+    opacity: 1;
+  }
+}
+/* =========================================
+   INTRO LOGO → NAVBAR LOGO
+========================================= */
+
+.nav-logo {
+  opacity: 1 !important;
+   
+  
+}
+
+
+
+/* =========================================
+   PREMIUM INTRO → NAVBAR HANDOFF
+========================================= */
+
+.navbar {
+  position: relative;
+  z-index: 10;
+}
+
+.nav-logo {
+  opacity: 0;
+
+  visibility: visible;
+
+  animation:
+    navbarLogoTakeover
+    0.35s
+    ease-out
+    3.65s
+    forwards;
+}
+
+
+
+/* =========================================
+   PREMIUM HERO WORD REVEAL
+   ========================================= */
+
+.hero .hero-word {
+  display: inline-block;
+
+  opacity: 0;
+  transform: translateY(45px);
+  filter: blur(8px);
+
+  animation: heroWordReveal 0.9s cubic-bezier(0.16, 1, 0.3, 1)
+    calc(var(--i) * 0.09s) forwards;
+}
+
+/* Keep hero hidden until intro finishes */
+.hero:not(.hero-ready) .hero-word {
+  animation-play-state: paused;
+}
+
+@keyframes heroWordReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(45px);
+    filter: blur(8px);
+  }
+
+  60% {
+    opacity: 1;
+    transform: translateY(-4px);
+    filter: blur(0);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+.hero .problem-word {
+  color: #666666;
+  animation:
+    heroWordReveal 0.9s cubic-bezier(0.16, 1, 0.3, 1)
+      calc(var(--i) * 0.09s) forwards,
+    problemColor 0.35s ease
+      1.17s forwards;
+}
+
+@keyframes problemColor {
+  from {
+    color: #666666;
+  }
+
+  to {
+    color: #ff3b30;
+  }
+}
+/* =========================================
+   HERO DESCRIPTION ENTRANCE
+   ========================================= */
+
+.hero-description {
+  opacity: 0;
+  transform: translateY(25px);
+  filter: blur(4px);
+}
+
+.hero.hero-ready .hero-description {
+  animation: heroDescriptionIn 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.9s forwards;
+}
+
+@keyframes heroDescriptionIn {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+    filter: blur(4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
 }

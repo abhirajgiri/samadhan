@@ -1,9 +1,53 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./App.css";
 import emailjs from "@emailjs/browser";
 function App() {
+  const introLogoRef = useRef(null);
+  const navLogoRef = useRef(null);
   const [isSending, setIsSending] = useState(false);
   const [submitStatus, setSubmitStatus] = useState("");
+  const [introVisible, setIntroVisible] = useState(true);
+    useEffect(() => {
+  if (!introVisible) return;
+
+  const timer = setTimeout(() => {
+    const intro = introLogoRef.current;
+    const nav = navLogoRef.current;
+
+    if (!intro || !nav) return;
+
+    const introRect = intro.getBoundingClientRect();
+    const navRect = nav.getBoundingClientRect();
+
+    const x =
+      navRect.left +
+      navRect.width / 2 -
+      (introRect.left + introRect.width / 2);
+
+    const y =
+      navRect.top +
+      navRect.height / 2 -
+      (introRect.top + introRect.height / 2);
+
+    const scale = navRect.width / introRect.width;
+
+    intro.style.setProperty("--move-x", `${x}px`);
+    intro.style.setProperty("--move-y", `${y}px`);
+    intro.style.setProperty("--move-scale", scale);
+
+    intro.classList.add("intro-logo-travel");
+
+    setTimeout(() => {
+      setIntroVisible(false);
+    }, 1500);
+  }, 2500);
+
+  return () => clearTimeout(timer);
+}, [introVisible]);
+    
+  
+
+
  const handleSubmit = (e) => {
   e.preventDefault();
 
@@ -67,33 +111,86 @@ function App() {
   }, []);
   return (
     <div className="app">
-            {waterVisible && (
-        <div className="flowing-water" aria-hidden="true">
-          <svg
-            viewBox="0 0 1440 500"
-            preserveAspectRatio="none"
-          >
-            <path
-              className="water-layer water-layer-back"
-              d="M0,300 C180,240 300,360 480,300 C660,240 780,360 960,300 C1140,240 1260,360 1440,300 L1440,500 L0,500 Z"
+      {introVisible && (
+  <div className="intro-screen">
+
+    {/* Animated background */}
+    <div className="intro-tech-bg" aria-hidden="true">
+        <svg viewBox="0 0 1440 900" preserveAspectRatio="none">
+
+            <path className="tech-line"
+                d="M-100 180 H280 L430 330 H700"
             />
 
-            <path
-              className="water-layer water-layer-middle"
-              d="M0,340 C160,280 320,400 500,330 C680,260 820,400 1000,330 C1180,260 1280,390 1440,320 L1440,500 L0,500 Z"
+            <path className="tech-line"
+                d="M1540 220 H1180 L1020 380 H760"
             />
 
-            <path
-              className="water-layer water-layer-front"
-              d="M0,380 C180,320 330,430 520,370 C700,310 850,430 1030,365 C1210,300 1300,420 1440,350 L1440,500 L0,500 Z"
+            <path className="tech-line"
+                d="M-100 690 H300 L470 520 H690"
             />
-          </svg>
-        </div>
-      )}
+
+            <path className="tech-line"
+                d="M1540 700 H1150 L970 540 H750"
+            />
+
+            <path className="tech-line"
+                d="M300 -100 V190 L500 390"
+            />
+
+            <path className="tech-line"
+                d="M1140 -100 V200 L940 390"
+            />
+
+            <path className="tech-line"
+                d="M250 1000 V720 L480 500"
+            />
+
+            <path className="tech-line"
+                d="M1190 1000 V720 L960 500"
+            />
+
+            <path className="tech-line central-line"
+                d="M250 450 H470 L560 360 H880 L970 450 H1190"
+            />
+
+            <circle className="tech-node" cx="280" cy="180" r="4" />
+            <circle className="tech-node" cx="430" cy="330" r="4" />
+            <circle className="tech-node" cx="1180" cy="220" r="4" />
+            <circle className="tech-node" cx="1020" cy="380" r="4" />
+
+            <circle className="tech-node" cx="300" cy="690" r="4" />
+            <circle className="tech-node" cx="470" cy="520" r="4" />
+            <circle className="tech-node" cx="1150" cy="700" r="4" />
+            <circle className="tech-node" cx="970" cy="540" r="4" />
+
+            <circle className="tech-node" cx="560" cy="360" r="5" />
+            <circle className="tech-node" cx="880" cy="360" r="5" />
+
+        </svg>
+    </div>
+
+
+    <div ref={introLogoRef} className="intro-logo">
+        {"SAMADHAN".split("").map((letter, index) => (
+            <span key={index} style={{ "--i": index }}>
+                {letter}
+            </span>
+        ))}
+    </div>
+
+</div>
+)}
+            
         
       {/* Navigation */}
-      <nav className="navbar">
-        <div className="logo">SAMADHAN</div>
+      <nav className={`navbar ${!introVisible ? "navbar-ready" : ""}`}>
+        <div
+          ref={navLogoRef}
+            className="logo nav-logo"
+        >
+           SAMADHAN
+        </div>
 
         <div className="nav-links">
           <a href="#services">Services</a>
@@ -108,7 +205,7 @@ function App() {
 
       {/* Hero */}
       <main>
-        <section className="hero">
+        <section className={`hero ${!introVisible ? "hero-ready" : ""}`}>
           <div className="hero-content">
             <div className="hero-badge">
               <span></span>
@@ -116,12 +213,26 @@ function App() {
             </div>
 
             <h1>
-              You bring the
-              <br />
-              <span>problem.</span>
-              <br />
-              We build the solution.
-            </h1>
+  <span className="hero-word" style={{ "--i": 0 }}>You</span>{" "}
+  <span className="hero-word" style={{ "--i": 1 }}>bring</span>{" "}
+  <span className="hero-word" style={{ "--i": 2 }}>the</span>
+
+  <br />
+
+  <span className="hero-word problem-word" style={{ "--i": 3 }}>
+    problem.
+  </span>
+
+  <br />
+
+  <span className="hero-word" style={{ "--i": 4 }}>We</span>{" "}
+  <span className="hero-word" style={{ "--i": 5 }}>build</span>{" "}
+  <span className="hero-word" style={{ "--i": 6 }}>the</span>
+
+  <br />
+
+  <span className="hero-word" style={{ "--i": 7 }}>solution.</span>
+</h1>
 
             <p className="hero-description">
               We build high-quality websites and intelligent automations
